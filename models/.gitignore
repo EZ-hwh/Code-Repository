@@ -1,0 +1,5 @@
+##ignore this file##
+/.data
+/.vector_cache
+/.vscode
+/__pycache__
