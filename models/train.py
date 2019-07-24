@@ -14,15 +14,16 @@ from test import test
 
 def train(args, data):
     model = BIMPM(args, data)
+
     if args.gpu > -1:
         model.cuda(args.gpu)
+        print('The model is training on GPU.')
 
     parameters = filter(lambda p: p.requires_grad, model.parameters())
     optimizer = optim.Adam(parameters, lr=args.learning_rate)
     criterion = nn.CrossEntropyLoss()
 
-    writer = SummaryWriter(log_dir='run/' + args.model_time)
-
+    writer = SummaryWriter(logdir='run/' + args.model_time)
     model.train()
     loss, last_epoch = 0, -1
     max_dev_acc, max_test_acc = 0, 0

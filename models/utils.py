@@ -14,10 +14,12 @@ class SNLI():
         self.TEXT.build_vocab(self.train, self.dev, self.test, vectors=GloVe(name='840B', dim=300))
         self.LABLE.build_vocab(self.train)
 
+        device = torch.device(f'cuda:{args.gpu}' if args.gpu>-1 else 'cpu')
+
         self.train_iter, self.dev_iter, self.test_iter = \
             data.BucketIterator.splits((self.train, self.dev, self.test),
                                                     batch_sizes=[args.batchsize] * 3,
-                                                    device=args.gpu)
+                                                    device=device)
         self.max_word_len = max([len(w) for w in self.TEXT.vocab.itos])
         # for <pad>
         self.char_vocab = {'': 0}
