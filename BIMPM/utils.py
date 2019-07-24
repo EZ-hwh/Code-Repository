@@ -15,11 +15,25 @@ class SNLI():
         self.LABLE.build_vocab(self.train)
 
         device = torch.device(f'cuda:{args.gpu}' if args.gpu>-1 else 'cpu')
-
+        '''
         self.train_iter, self.dev_iter, self.test_iter = \
             data.BucketIterator.splits((self.train, self.dev, self.test),
                                                     batch_sizes=[args.batchsize] * 3,
                                                     device=device)
+        '''
+        self.train_iter = data.BucketIterator(dataset=self.train,
+                                              batch_size=args.batch_size,
+                                              repeat=True,
+                                              device=device)
+        self.dev_iter = data.BucketIterator(dataset=self.dev,
+                                            batch_size=args.batch_size,
+                                            repeat=False,
+                                            device=device)
+        self.test_iter = data.BucketIterator(dataset=self.test,
+                                             batch_size=args.batch_size,
+                                             repeat=False,
+                                             device=device)
+
         self.max_word_len = max([len(w) for w in self.TEXT.vocab.itos])
         # for <pad>
         self.char_vocab = {'': 0}

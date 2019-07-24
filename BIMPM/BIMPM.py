@@ -337,7 +337,7 @@ class BIMPM(nn.Module):
         x = self.dropout(x)
 
         # ----- Prediction Layer -----
-        x = F.tanh(self.pred_fc1(x))
+        x = torch.tanh(self.pred_fc1(x))
         x = self.dropout(x)
         x = self.pred_fc2(x)
 
