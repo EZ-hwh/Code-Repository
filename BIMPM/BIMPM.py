@@ -29,7 +29,7 @@ class BIMPM(nn.Module):
                 batch_first = True) # Use single direction LSTM to train char vector
 
         self.context_LSTM = nn.LSTM(
-                input_size = self.args.d,
+                input_size = self.d,
                 hidden_size = self.args.hidden_size,
                 num_layers = 1,
                 bidirectional = True,
@@ -75,7 +75,7 @@ class BIMPM(nn.Module):
         nn.init.kaiming_normal_(self.context_LSTM.weight_ih_l0_reverse)
         nn.init.constant_(self.context_LSTM.bias_ih_l0_reverse, val=0)
         nn.init.orthogonal_(self.context_LSTM.weight_hh_l0_reverse)
-        nn.init.constant_(self,context_LSTM.bias_hh_l0_reverse, val=0)
+        nn.init.constant_(self.context_LSTM.bias_hh_l0_reverse, val=0)
 
         # ----- Matching Layer -----
         for i in range(1,9):
@@ -103,7 +103,7 @@ class BIMPM(nn.Module):
     def dropout(self, v):
         return F.dropout(v, p=self.args.dropout, training=self.training)
 
-    def forward(self, kwargs):
+    def forward(self, **kwargs):
         def mp_matching_func(v1, v2, w):
             """
             :param v1: (batch, seq_len, hidden_size)
@@ -263,7 +263,7 @@ class BIMPM(nn.Module):
 
         # (batch, seq_len1, seq_len2, l)
         mv_max_fw = mp_matching_func_pairwise(con_p_fw, con_h_fw, self.mp_w3)
-        mv_max_bw = mp_matching_func_pairwise(con_p,bw, con_h_bw, self.mp_w4)
+        mv_max_bw = mp_matching_func_pairwise(con_p_bw, con_h_bw, self.mp_w4)
         
         # (batch, seq_len, l)
         mv_p_max_fw, _ = mv_max_fw.max(dim=2)
@@ -290,8 +290,8 @@ class BIMPM(nn.Module):
         att_mean_h_bw = div_with_small_value(att_h_bw.sum(dim=2), att_bw.sum(dim=2, keepdim=True))
 
         # (batch, seq_len2, hidden_size) / (batch, seq_len2, 1) -> (batch, seq_len2, hidden_size)
-        att_mean_p_fw = div_with_small_value(att_p_fw.sum(dim=1), att_fw.sum(dim=1, keepdim=True))
-        att_mean_p_bw = div_with_small_value(att_p_bw.sum(dim=1), att_bw.sum(dim=1, keepdim=True))
+        att_mean_p_fw = div_with_small_value(att_p_fw.sum(dim=1), att_fw.sum(dim=1, keepdim=True).permute(0, 2, 1))
+        att_mean_p_bw = div_with_small_value(att_p_bw.sum(dim=1), att_bw.sum(dim=1, keepdim=True).permute(0, 2, 1))
 
         # (batch, seq_len, l)
         mv_p_att_mean_fw = mp_matching_func(con_p_fw, att_mean_h_fw, self.mp_w5)

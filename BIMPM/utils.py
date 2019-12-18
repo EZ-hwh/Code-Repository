@@ -1,7 +1,7 @@
 from torchtext import data
 from torchtext import datasets
 from torchtext.vocab import GloVe
-
+import torch
 from nltk import word_tokenize
 
 class SNLI():
@@ -14,7 +14,8 @@ class SNLI():
         self.TEXT.build_vocab(self.train, self.dev, self.test, vectors=GloVe(name='840B', dim=300))
         self.LABLE.build_vocab(self.train)
 
-        device = torch.device(f'cuda:{args.gpu}' if args.gpu>-1 else 'cpu')
+        #device = torch.device(f'cuda:{args.gpu}' if args.gpu>-1 else 'cpu')
+        device = torch.device(f'cuda:{args.gpu}' if torch.cuda.is_available() else 'cpu')
         '''
         self.train_iter, self.dev_iter, self.test_iter = \
             data.BucketIterator.splits((self.train, self.dev, self.test),

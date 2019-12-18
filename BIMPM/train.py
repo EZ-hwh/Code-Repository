@@ -42,7 +42,7 @@ def train(args, data):
         else:
             s1, s2 = 'q1', 'q2'
         
-        s1 = getattr(batch, s1), getattr(batch, s2)
+        s1, s2 = getattr(batch, s1), getattr(batch, s2)
 
         # limit the lengths of input sentences up to max_sent_len
         if args.max_sent_len >= 0:
@@ -127,9 +127,9 @@ def main():
 
     setattr(args, 'char_vocab_size', len(data.char_vocab))
     setattr(args, 'word_vocab_size', len(data.TEXT.vocab))
-    setattr(args, 'class_size', len(data.LABEL.vocab))
+    setattr(args, 'class_size', len(data.LABLE.vocab))
     setattr(args, 'max_word_len', data.max_word_len)
-    setattr(args, 'model_time', strftime('%H:%M:%S', getime()))
+    setattr(args, 'model_time', strftime('%H:%M:%S', gmtime()))
 
     print('training start!')
     best_model = train(args, data)
