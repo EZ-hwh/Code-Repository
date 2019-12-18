@@ -1,7 +1,7 @@
 from torchtext import data
 from torchtext import datasets
 from torchtext.vocab import GloVe
-
+import torch
 from nltk import word_tokenize
 
 class SNLI():

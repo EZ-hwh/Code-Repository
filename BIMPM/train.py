@@ -127,9 +127,9 @@ def main():
 
     setattr(args, 'char_vocab_size', len(data.char_vocab))
     setattr(args, 'word_vocab_size', len(data.TEXT.vocab))
-    setattr(args, 'class_size', len(data.LABEL.vocab))
+    setattr(args, 'class_size', len(data.LABLE.vocab))
     setattr(args, 'max_word_len', data.max_word_len)
-    setattr(args, 'model_time', strftime('%H:%M:%S', getime()))
+    setattr(args, 'model_time', strftime('%H:%M:%S', gettime()))
 
     print('training start!')
     best_model = train(args, data)
