@@ -10,7 +10,7 @@ from model import EncoderCNN,DecoderRNN
 from torch.nn.utils.rnn import pack_padded_sequence
 from torchvision import transforms
 
-torch.cuda.set_device(0)
+torch.cuda.set_device(1)
 device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 def train_main(args):
@@ -78,6 +78,7 @@ def train_main(args):
                 torch.save(encoder.state_dict(), os.path.join(
                     args.model_path, 'encoder-{}-{}.ckpt'.format(epoch+1, i+1)))
     
+        # 每个epoch结束就保存一次模型
         torch.save(decoder.state_dict(), os.path.join(
             args.model_path, 'decoder-{}.ckpt'.format(epoch+1)))
         torch.save(encoder.state_dict(), os.path.join(
@@ -90,9 +91,9 @@ if __name__ == "__main__":
     # 设置文件夹路径
     parser.add_argument('--model_path', type=str, default='models/' , help='path for saving trained models')
     parser.add_argument('--crop_size', type=int, default=224 , help='size for randomly cropping images')
-    parser.add_argument('--vocab_path', type=str, default='/home/harry/Code/Image Caption/vocabval.pkl', help='path for vocabulary wrapper')
-    parser.add_argument('--image_dir', type=str, default='/home/harry/Code/Image Caption/resizeval2017', help='directory for resized images')
-    parser.add_argument('--caption_path', type=str, default='/home/harry/Code/Image Caption/annotations/captions_val2017.json', help='path for train annotation json file')
+    parser.add_argument('--vocab_path', type=str, default='/remote-home/competition/hwh/Code-Repository/LCRN/vocab.pkl', help='path for vocabulary wrapper')
+    parser.add_argument('--image_dir', type=str, default='/remote-home/competition/hwh/resized2017', help='directory for resized images')
+    parser.add_argument('--caption_path', type=str, default='/remote-home/competition/hwh/annotations/captions_train2017.json', help='path for train annotation json file')
 
     # 设置打印信息步长和保存步长
     parser.add_argument('--log_step', type=int , default=10, help='step size for prining log info')
@@ -105,8 +106,8 @@ if __name__ == "__main__":
 
     # 设置超参数
     parser.add_argument('--num_epochs', type=int, default=5)
-    parser.add_argument('--batch_size', type=int, default=32)
-    parser.add_argument('--num_workers', type=int, default=0)
+    parser.add_argument('--batch_size', type=int, default=256)
+    parser.add_argument('--num_workers', type=int, default=2)
     parser.add_argument('--learning_rate', type=float, default=0.001)
 
     config = parser.parse_args()

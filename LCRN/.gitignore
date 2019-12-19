@@ -1,0 +1,8 @@
+##ignore this file##
+/.data
+/.vector_cache
+/.vscode
+/__pycache__
+/models
+/vocab.pkl
+/pycocotools

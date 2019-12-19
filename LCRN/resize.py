@@ -32,10 +32,8 @@ def resize_main(args):
 # 注意指定数据集相关文件的路径
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--image_dir', type=str, default='/home/harry/Code/Image Caption/train2017/',
-                        help='directory for train images')
-    parser.add_argument('--output_dir', type=str, default='/home/harry/Code/Image Caption/resized2017/',
-                        help='directory for saving resized images')
+    parser.add_argument('--image_dir', type=str, default='/remote-home/competition/hwh/train2017/', help='directory for train images')
+    parser.add_argument('--output_dir', type=str, default='/remote-home/competition/hwh/resized2017/', help='directory for saving resized images')
     parser.add_argument('--image_size', type=int, default=256,
                         help='size for image after processing')
     config = parser.parse_args()

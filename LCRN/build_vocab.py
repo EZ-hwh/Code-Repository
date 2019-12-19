@@ -60,9 +60,9 @@ def build_vocab_main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--caption_path', type=str, 
-                        default='/home/harry/Code/Image Caption/annotations/captions_train2017.json', 
+                        default='/remote-home/competition/hwh/annotations/captions_train2017.json', 
                         help='path for train annotation file')
-    parser.add_argument('--vocab_path', type=str, default='/home/harry/Code/Image Caption/vocab.pkl', 
+    parser.add_argument('--vocab_path', type=str, default='/remote-home/competition/hwh/Code-Repository/LCRN/vocab.pkl', 
                         help='path for saving vocabulary wrapper')
     parser.add_argument('--threshold', type=int, default=4, 
                         help='minimum word count threshold')
